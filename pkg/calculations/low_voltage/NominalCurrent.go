@@ -5,7 +5,7 @@ import (
 	"math"
 )
 
-func NominalCurrent(power float64, voltage float64, powerFactor float64, demandFactor float64) (float64, error) {
+func NominalCurrent(power float64, voltage float64, powerFactor float64, demandFactor float64, efficiency float64) (float64, error) {
 
 	if math.IsNaN(power) || math.IsInf(power, 0) {
 		return 0, fmt.Errorf("Potência inválida: valor não numérico ou infinito")
@@ -65,7 +65,25 @@ func NominalCurrent(power float64, voltage float64, powerFactor float64, demandF
 		)
 	}
 
-	result := ((power * demandFactor) / (voltage * powerFactor))
+	if math.IsNaN(efficiency) || math.IsInf(efficiency, 0) {
+		return 0, fmt.Errorf("Rendimento inválido: valor não numérico ou infinito")
+	}
+
+	if efficiency <= 0 {
+		return 0, fmt.Errorf(
+			"Rendimento inválido: deve ser maior que zero (valor informado: %.2f)",
+			efficiency,
+		)
+	}
+
+	if efficiency > 1 {
+		return 0, fmt.Errorf(
+			"Rendimento inválido : deve ser menor ou igual a 1 (valor informado: %.2f)",
+			efficiency,
+		)
+	}
+
+	result := ((power * demandFactor) / (voltage * powerFactor * efficiency))
 
 	return result, nil
 }

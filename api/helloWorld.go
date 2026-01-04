@@ -10,6 +10,6 @@ func hello(w http.ResponseWriter, req *http.Request) {
 }
 
 func helloRoute() error {
-	http.HandleFunc("/hello", hello)
+	http.HandleFunc("/api/hello", hello)
 	return nil
 }

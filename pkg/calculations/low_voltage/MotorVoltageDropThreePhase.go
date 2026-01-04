@@ -5,10 +5,11 @@ import (
 	"math"
 )
 
-func VoltageDropInDirectCurrent(
+func MotorVoltageDropThreePhase(
 	current float64,
 	length float64,
 	resistance float64,
+	cablesPerPhase int,
 ) (float64, error) {
 
 	if math.IsNaN(current) || math.IsInf(current, 0) {
@@ -32,7 +33,13 @@ func VoltageDropInDirectCurrent(
 		return 0, fmt.Errorf("Resistência inválida: deve ser não negativa (%.6f)", resistance)
 	}
 
-	voltageDrop := (2 * resistance * current * length) / 1000
+	if cablesPerPhase <= 0 {
+		return 0, fmt.Errorf("Quantidade de cabos por fase inválida: deve ser maior que zero")
+	}
 
-	return voltageDrop, nil
+	result :=
+		(math.Sqrt(3) * current * length * (resistance * 0.3)) /
+			(float64(cablesPerPhase) * 1000)
+
+	return result, nil
 }

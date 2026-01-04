@@ -24,5 +24,6 @@ func VoltageDropPercent(
 		return 0, fmt.Errorf("Tensão inválida: deve ser maior que zero (%.2f)", voltage)
 	}
 
-	return (voltageDrop / voltage) * 100, nil
+	result := (voltageDrop / voltage) * 100
+	return result, nil
 }

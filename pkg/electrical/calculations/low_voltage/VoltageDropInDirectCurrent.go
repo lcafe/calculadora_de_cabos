@@ -32,7 +32,7 @@ func VoltageDropInDirectCurrent(
 		return 0, fmt.Errorf("Resistência inválida: deve ser não negativa (%.6f)", resistance)
 	}
 
-	voltageDrop := (2 * resistance * current * length) / 1000
+	result := (2 * resistance * current * length) / 1000
 
-	return voltageDrop, nil
+	return result, nil
 }
